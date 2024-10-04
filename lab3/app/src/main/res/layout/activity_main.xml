@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/background">
+
+    <!-- Первый текстовый блок -->
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Авторизуйтесь"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        style="@style/textviewStyle"/>
+
+    <!-- Ввод текста -->
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите имя"
+        android:layout_marginTop="10dp"
+        style="@style/edittextviewstyle"/>
+
+    <!-- Первая кнопка -->
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Войти"
+        android:layout_marginTop="10dp"/>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal">
+        <!-- Первая картинка -->
+        <ImageView
+            android:id="@+id/imageView1"
+            android:src="@drawable/picture1"
+            style="@style/imgviewstyle"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="Картинка конфискована у пинтереста"
+            style="@style/textviewStyle"/>
+    </FrameLayout>
+
+
+    <!-- Вторая картинка -->
+    <ImageView
+        android:id="@+id/imageView2"
+        android:src="@drawable/picture2"
+        android:layout_marginTop="10dp"
+        style="@style/imgviewstyle"/>
+
+    <!-- Вторая TextView -->
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:text="Проверка нижней кнопки"
+        android:layout_marginTop="10dp"
+        style="@style/textviewStyle"/>
+
+    <!-- Вторая кнопка -->
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Нажать для проверки"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>
