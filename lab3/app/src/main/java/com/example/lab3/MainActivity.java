@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String inputText = editText.getText().toString();
+                inputText = "Привет, " + inputText;
                 textView1.setText(inputText);
                 Toast.makeText(MainActivity.this, "Кнопка 1 нажата", Toast.LENGTH_SHORT).show();
             }
