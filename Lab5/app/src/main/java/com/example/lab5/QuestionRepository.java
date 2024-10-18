@@ -17,7 +17,7 @@ public class QuestionRepository {
         questionList.add(new Question("Какие из следующих языков используются для разработки Android приложений?",
                 Question.TYPE_MULTIPLE_CHOICE,
                 new String[]{"Java", "Kotlin", "Swift", "C++"},
-                "Java,Kotlin"));
+                new String[]{"Java", "Kotlin"}));
 
         // Вопрос со свободным ответом
         questionList.add(new Question("Как называется язык разметки для интерфейсов Android?",

@@ -9,7 +9,7 @@ public class Question {
     private String questionText;
     private int type;
     private String[] options;
-    private String correctAnswer;
+    private String correctAnswer = "";
     private int imageResId;
 
     // Конструктор для обычных вопросов
@@ -18,6 +18,16 @@ public class Question {
         this.type = type;
         this.options = options;
         this.correctAnswer = correctAnswer;
+    }
+
+    // Конструктор для вопросов с несколькими ответами
+    public Question(String questionText, int type, String[] options, String[] correctAnswers) {
+        this.questionText = questionText;
+        this.type = type;
+        this.options = options;
+        for(String string : correctAnswers){
+            this.correctAnswer.concat(string);
+        }
     }
 
     // Конструктор для вопросов с изображением
