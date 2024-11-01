@@ -26,78 +26,91 @@
 
             <!-- Вопрос с одним вариантом ответа -->
 
-            <TextView
-                android:id="@+id/questionTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Вопрос"
-                android:textSize="18sp"
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="366dp"
+                android:layout_height="355dp"
+                android:layout_weight="1"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.182"
+                app:layout_constraintHorizontal_bias="0.461"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintVertical_bias="0.069" />
 
-            <!-- Вопрос с несколькими вариантами ответа -->
+<!--            <TextView-->
+<!--                android:id="@+id/questionTextView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Вопрос"-->
+<!--                android:textSize="18sp"-->
+<!--                android:visibility="visible"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.182"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintVertical_bias="0.0"-->
+<!--                tools:ignore="MissingConstraints" />-->
 
-            <RadioGroup
-                android:id="@+id/singleChoiceGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/submitButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/questionTextView"
-                tools:ignore="MissingConstraints">
-                <!-- Варианты ответов (RadioButton) -->
-            </RadioGroup>
 
-            <!-- Вопрос со свободным ответом -->
+<!--            <RadioGroup-->
+<!--                android:id="@+id/singleChoiceGroup"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="36dp"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/submitButton"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.1"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/questionTextView"-->
+<!--                tools:ignore="MissingConstraints">-->
+<!--                &lt;!&ndash; Варианты ответов (RadioButton) &ndash;&gt;-->
+<!--            </RadioGroup>-->
 
-            <LinearLayout
-                android:id="@+id/multipleChoiceLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/submitButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.12"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/questionTextView">
-                <!-- Варианты ответов (CheckBox) -->
-            </LinearLayout>
 
-            <EditText
-                android:id="@+id/textAnswerEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Введите ответ"
-                android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/submitButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/questionTextView" />
+<!--            &lt;!&ndash; Вопрос с несколькими вариантами ответа &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:id="@+id/multipleChoiceLayout"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:orientation="vertical"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/submitButton"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.12"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/questionTextView">-->
+<!--                &lt;!&ndash; Варианты ответов (CheckBox) &ndash;&gt;-->
+<!--            </LinearLayout>-->
+<!--            &lt;!&ndash; Вопрос со свободным ответом &ndash;&gt;-->
+<!--            <EditText-->
+<!--                android:id="@+id/textAnswerEditText"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Введите ответ"-->
+<!--                android:visibility="visible"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/submitButton"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.2"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/questionTextView" />-->
 
-            <!-- Вопрос с изображением -->
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/submitButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/questionTextView"
-                app:srcCompat="@drawable/android_logo" />
+<!--            &lt;!&ndash; Вопрос с изображением &ndash;&gt;-->
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView"-->
+<!--                android:layout_width="250dp"-->
+<!--                android:layout_height="250dp"-->
+<!--                android:scaleType="centerInside"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/submitButton"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/questionTextView"-->
+<!--                app:srcCompat="@drawable/android_logo" />-->
 
             <Button
                 android:id="@+id/submitButton"
@@ -106,9 +119,10 @@
                 android:text="Ответить"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintHorizontal_bias="0.899"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/questionTextView"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_container"
+                app:layout_constraintVertical_bias="0.121"
                 tools:flow_verticalAlign="center" />
 
             <TextView
@@ -121,6 +135,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/submitButton"
                 app:layout_constraintVertical_bias="0.1" />
+
+            <Button
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Назад"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/submitButton"
+                app:layout_constraintHorizontal_bias="0.384"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_container"
+                app:layout_constraintVertical_bias="0.121" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

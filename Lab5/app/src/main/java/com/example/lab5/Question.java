@@ -1,6 +1,8 @@
 package com.example.lab5;
 
-public class Question {
+import java.io.Serializable;
+
+public class Question implements Serializable {
     public static final int TYPE_SINGLE_CHOICE = 1;
     public static final int TYPE_MULTIPLE_CHOICE = 2;
     public static final int TYPE_TEXT_ANSWER = 3;
