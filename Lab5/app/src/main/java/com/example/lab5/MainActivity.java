@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.widget.Button;  // Для кнопок
 import android.widget.Toast;  // Для всплывающих сообщений
 import java.util.List;  // Для списков
@@ -32,15 +34,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // УДАЛИТЬ ПАТОМ
-//        questionTextView = findViewById(R.id.questionTextView);
-//        statsTextView = findViewById(R.id.statsTextView);
-//        singleChoiceGroup = findViewById(R.id.singleChoiceGroup);
-//        multipleChoiceLayout = findViewById(R.id.multipleChoiceLayout);
-//        textAnswerEditText = findViewById(R.id.textAnswerEditText);
-//        imageView = findViewById(R.id.imageView);
-        // УДАЛИТЬ ПАТОМ
 
         // Подгружаем ВьюМодел
         viewModel = new ViewModelProvider(this).get(QuestionViewModel.class);
@@ -77,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             currentQuestionIndex++;
             viewModel.savecurrentIndex(currentQuestionIndex);
             loadQuestionFragment(viewModel.getcurrentIndex());
-
+            Log.i("Button press", "submitbutton");
             boolean isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
             if (isLandscape) {
                 Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_stats_container);
@@ -330,11 +323,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        setContentView(R.layout.activity_main);
 
+        // Кнопка ответа
+        submitButton = findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(v -> handleAnswer());
+
+        // Кнопка назад
+        backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(v -> onBackPressed());
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+            // Горизонтальная ориентация: фрагменты для вопроса и статистики
+            loadQuestionFragment(viewModel.getcurrentIndex());
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_stats_container, new StatsFragment())
+                    .commit();
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_stats_container);
+            currentFragment = (StatsFragment) currentFragment;
+            ((StatsFragment) currentFragment).setStatsTextView(viewModel.getCorrectAnswerCount(),
+                    viewModel.getQuestions().size()-viewModel.getCorrectAnswerCount(),
+                    viewModel.getQuestions().size());
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            loadQuestionFragment(viewModel.getcurrentIndex());
             Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
 
         } }

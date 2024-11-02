@@ -27,9 +27,12 @@ public class Question implements Serializable {
         this.questionText = questionText;
         this.type = type;
         this.options = options;
-        for(String string : correctAnswers){
-            this.correctAnswer.concat(string);
+
+        StringBuilder result = new StringBuilder(); // Используем StringBuilder для сборки строки
+        for (String string : correctAnswers) {
+            result.append(string);
         }
+        this.correctAnswer = result.toString();
     }
 
     // Конструктор для вопросов с изображением

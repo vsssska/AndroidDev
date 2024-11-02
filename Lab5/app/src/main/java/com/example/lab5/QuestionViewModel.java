@@ -1,5 +1,7 @@
 package com.example.lab5;
 
+import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,6 +65,8 @@ public class QuestionViewModel extends ViewModel {
             if (userAnswer != null && userAnswer.equals(correctAnswer)) {
                 correctCount++;
             }
+
+            Log.i("CorrectAnswerSave", correctAnswer);
         }
         return correctCount;
     }
