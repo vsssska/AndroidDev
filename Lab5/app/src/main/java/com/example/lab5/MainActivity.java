@@ -5,33 +5,15 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import com.example.lab5.QuestionRepository;
-import com.example.lab5.Question;
-import android.view.View;  // Для работы с View
 import android.widget.Button;  // Для кнопок
-import android.widget.EditText;  // Для текстовых полей
-import android.widget.ImageView;  // Для изображений
-import android.widget.LinearLayout;  // Для LinearLayout
-import android.widget.RadioGroup;  // Для RadioGroup
-import android.widget.TextView;  // Для TextView
 import android.widget.Toast;  // Для всплывающих сообщений
-import android.widget.RadioButton; // Для Radio Button
-import android.widget.CheckBox; // Для Check Box
-import java.util.ArrayList;  // Для Array списков
-import androidx.appcompat.app.AppCompatActivity;  // Для работы с Activity
 import java.util.List;  // Для списков
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import android.content.res.Configuration;
 
 
 
@@ -61,9 +43,7 @@ public class MainActivity extends AppCompatActivity {
         // УДАЛИТЬ ПАТОМ
 
         // Подгружаем ВьюМодел
-        //viewModel = new ViewModelProvider(this).get(QuestionViewModel.class);
-        QuestionRepository repository = new QuestionRepository();
-        questionList = repository.getQuestionList(); // Добавляем ответы из вью модел
+        viewModel = new ViewModelProvider(this).get(QuestionViewModel.class);
 
         // Кнопка ответа
         submitButton = findViewById(R.id.submitButton);
@@ -73,8 +53,18 @@ public class MainActivity extends AppCompatActivity {
         backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> onBackPressed());
 
+
         if (savedInstanceState == null) {
-            loadQuestionFragment(0);
+            // Загружаем фрагменты при первом запуске
+            if (findViewById(R.id.fragment_stats_container) == null) {
+                loadQuestionFragment(viewModel.getcurrentIndex());
+            } else {
+                // Горизонтальная ориентация: фрагменты для вопроса и статистики
+                loadQuestionFragment(viewModel.getcurrentIndex());
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_stats_container, new StatsFragment())
+                        .commit();
+            }
         }
 
     }
@@ -83,10 +73,20 @@ public class MainActivity extends AppCompatActivity {
         // Проверка ответа и обновление статистики
         checkAnswerForCurrentQuestion();
 
-        if (currentQuestionIndex < questionList.size() - 1) {
+        if (currentQuestionIndex < viewModel.getQuestions().size() - 1) {
             currentQuestionIndex++;
-            //viewModel.savecurrentIndex(currentQuestionIndex);
-            loadQuestionFragment(currentQuestionIndex);
+            viewModel.savecurrentIndex(currentQuestionIndex);
+            loadQuestionFragment(viewModel.getcurrentIndex());
+
+            boolean isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+            if (isLandscape) {
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_stats_container);
+                currentFragment = (StatsFragment) currentFragment;
+                ((StatsFragment) currentFragment).setStatsTextView(viewModel.getCorrectAnswerCount(),
+                        viewModel.getQuestions().size()-viewModel.getCorrectAnswerCount(),
+                        viewModel.getQuestions().size());
+            }
+
         } else {
             Toast.makeText(this, "Вы прошли все вопросы!", Toast.LENGTH_SHORT).show();
             // Показать результаты (другая активность)
@@ -97,14 +97,14 @@ public class MainActivity extends AppCompatActivity {
     // Показать экран со статистикой (другую активность)
     private void showStatsScreen() {
         Intent intent = new Intent(MainActivity.this, StatsActivity.class);
-        intent.putExtra("correctAnswers", correctAnswers);
-        intent.putExtra("incorrectAnswers", incorrectAnswers);
-        intent.putExtra("totalQuestions", questionList.size());
+        intent.putExtra("correctAnswers", viewModel.getCorrectAnswerCount());
+        intent.putExtra("incorrectAnswers", viewModel.getQuestions().size()-viewModel.getCorrectAnswerCount());
+        intent.putExtra("totalQuestions", viewModel.getQuestions().size());
         startActivity(intent);
     }
 
     private void loadQuestionFragment(int index) {
-        Question question = questionList.get(currentQuestionIndex);
+        Question question = viewModel.getQuestions().get(currentQuestionIndex);
         Fragment fragment = null;
 
         Bundle bundle = new Bundle();
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment.setArguments(bundle);
                 break;
             case Question.TYPE_IMAGE_QUESTION:
-                fragment = new TextAnswerFragment();
+                fragment = new ImageAnswerFragment();
                 fragment.setArguments(bundle);
                 break;
             default:
@@ -134,48 +134,45 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(R.id.fragment_quest_container, fragment)
                 .commit();
     }
 
     private void checkAnswerForCurrentQuestion() {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_quest_container);
+        String correctanswer = viewModel.getQuestions().get(viewModel.getcurrentIndex()).getCorrectAnswer();
 
         if (currentFragment instanceof SingleChoiceQuestionFragment) {
             // Получение ответа из фрагмента одиночного выбора
             SingleChoiceQuestionFragment singleChoiceFragment = (SingleChoiceQuestionFragment) currentFragment;
             String answer = singleChoiceFragment.getUserAnswer();
 
-            // Проверка ответа
-            if (answer != null && answer.equals("asdfsaf")) {
-                correctAnswers++;
-            } else {
-                incorrectAnswers++;
-            }
+            viewModel.saveAnswer(currentQuestionIndex, answer);
+
         }
         else if (currentFragment instanceof MultipleChoiceQuestionFragment) {
 // Получение ответа из фрагмента множественного выбора
             MultipleChoiceQuestionFragment multipleChoiceQuestionFragment = (MultipleChoiceQuestionFragment) currentFragment;
             String answer = multipleChoiceQuestionFragment.getUserAnswer();
 
-            // Проверка ответа
-            if (answer != null && answer.equals("asdfsaf")) {
-                correctAnswers++;
-            } else {
-                incorrectAnswers++;
-            }
+            viewModel.saveAnswer(currentQuestionIndex, answer);
+
         }
         else if (currentFragment instanceof TextAnswerFragment) {
             // Получение ответа из сво бодного ответа
             TextAnswerFragment textAnswerFragment = (TextAnswerFragment) currentFragment;
             String answer = textAnswerFragment.getUserAnswer();
 
-            // Проверка ответа
-            if (answer != null && answer.equals("asdfsaf")) {
-                correctAnswers++;
-            } else {
-                incorrectAnswers++;
-            }
+            viewModel.saveAnswer(currentQuestionIndex, answer);
+
+        }
+        else if (currentFragment instanceof ImageAnswerFragment) {
+            // Получение ответа из сво бодного ответа с картинкой
+            ImageAnswerFragment imageAnswerFragment = (ImageAnswerFragment) currentFragment;
+            String answer = imageAnswerFragment.getUserAnswer();
+
+            viewModel.saveAnswer(currentQuestionIndex, answer);
+
         }
 
     }
@@ -316,16 +313,29 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        //viewModel.savecurrentIndex(currentQuestionIndex);
+        viewModel.savecurrentIndex(currentQuestionIndex);
     }
 
     @Override
     public void onBackPressed() {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
-            loadQuestionFragment(currentQuestionIndex);
+            viewModel.savecurrentIndex(currentQuestionIndex);
+            loadQuestionFragment(viewModel.getcurrentIndex());
         } else {
             super.onBackPressed();
         }
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+
+        } }
 }

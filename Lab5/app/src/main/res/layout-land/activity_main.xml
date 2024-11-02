@@ -24,18 +24,19 @@
             android:padding="16dp"
             android:id="@+id/constraintlayout">
 
+
             <FrameLayout
                 android:id="@+id/fragment_quest_container"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="274dp"
+                android:layout_height="275dp"
                 android:layout_weight="1"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.461"
+                app:layout_constraintHorizontal_bias="0.056"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.069" />
+                app:layout_constraintVertical_bias="0.25" />
 
             <Button
                 android:id="@+id/submitButton"
@@ -44,10 +45,10 @@
                 android:text="Ответить"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.899"
+                app:layout_constraintHorizontal_bias="0.237"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_quest_container"
-                app:layout_constraintVertical_bias="0.121"
+                app:layout_constraintVertical_bias="0.195"
                 tools:flow_verticalAlign="center" />
 
             <TextView
@@ -68,10 +69,20 @@
                 android:text="Назад"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/submitButton"
-                app:layout_constraintHorizontal_bias="0.384"
+                app:layout_constraintHorizontal_bias="0.28"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_quest_container"
-                app:layout_constraintVertical_bias="0.121" />
+                app:layout_constraintVertical_bias="0.195" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragment_stats_container"
+                android:name="com.example.lab5.StatsFragment"
+                android:layout_width="295dp"
+                android:layout_height="331dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/submitButton"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
