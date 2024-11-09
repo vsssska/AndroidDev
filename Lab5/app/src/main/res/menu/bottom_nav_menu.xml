@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Главная"/>
+    <item
+        android:id="@+id/nav_java"
+        android:icon="@drawable/ic_java"
+        android:title="Java"/>
+    <item
+        android:id="@+id/nav_kotlin"
+        android:icon="@drawable/ic_kotlin"
+        android:title="Kotlin"/>
+    <item
+        android:id="@+id/nav_locations"
+        android:icon="@drawable/ic_locations"
+        android:title="Адреса"/>
+</menu>
