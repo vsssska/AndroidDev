@@ -7,4 +7,9 @@
         android:icon="@drawable/ic_quizstart"
         android:title="Начать квиз"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_create_order"
+        android:icon="@drawable/ic_create_order"
+        android:title="Создать Заказ"
+        app:showAsAction="ifRoom" />
 </menu>

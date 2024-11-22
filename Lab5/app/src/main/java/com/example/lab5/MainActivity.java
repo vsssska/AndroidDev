@@ -73,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             }
+            if (item.getItemId() == R.id.action_create_order) {
+                Intent intent = new Intent(this, CreateOrderActivity.class);
+                startActivity(intent);
+                return true;
+            }
             return false;
         });
     }
