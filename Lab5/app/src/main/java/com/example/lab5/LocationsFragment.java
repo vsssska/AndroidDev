@@ -8,6 +8,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayoutManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +31,19 @@ public class LocationsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_locations, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 1));
+        //recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 1));
+
+        // Устанавливаем FlexboxLayoutManager
+        FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(getContext());
+        flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager.setFlexWrap(FlexWrap.WRAP);
+
+        recyclerView.setLayoutManager(flexboxLayoutManager);
 
         // Настраиваем адаптер
         locationAdapter = new LocationAdapter(getLocations());
         recyclerView.setAdapter(locationAdapter);
+
 
         return view;
     }

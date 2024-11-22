@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
+                toolbar.setTitle(bottomNavigationView.getMenu().getItem(position).getTitle());
             }
         });
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
+            boolean setNewMenu = false;
             if(itemId == R.id.nav_home){
                 viewPager.setCurrentItem(0);
                 return true;

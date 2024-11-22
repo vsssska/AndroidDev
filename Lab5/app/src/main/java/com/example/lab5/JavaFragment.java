@@ -17,7 +17,14 @@ public class JavaFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private Product[] products = new Product[] {
-            new Product("Коффе машина", "Машина для приготовления коффе", 1350.0, R.drawable.ic_coffemaker)
+            new Product("Коффе машина", "Машина для приготовления коффе", 9350.0, R.drawable.ic_coffemaker),
+            new Product("Junior gaydev", "Junior подготовка к разработке игр", 1350.0, R.drawable.ic_javajunior),
+            new Product("Middle gaydev", "Middle подготовка к разработке игр", 1930.0, R.drawable.ic_javamiddle),
+            new Product("TeamLid gaydev", "TeamLid подготовка к разработке игр", 1930.0, R.drawable.ic_javalid),
+            new Product("Junior webprog", "Junior подготовка к разработке сайтов", 1350.0, R.drawable.ic_javajunior),
+            new Product("Middle webprog", "Middle подготовка к разработке сайтов", 1930.0, R.drawable.ic_javamiddle),
+            new Product("TeamLid webprog", "TeamLid подготовка к разработке сайтов", 1930.0, R.drawable.ic_javalid),
+            new Product("Scam java guides", "Подготовка к скаму новичков, путем продажи нерабочих курсов", 5000, R.drawable.ic_javascam)
     };
     private ProductAdapter productAdapter;
 

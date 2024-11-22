@@ -35,7 +35,6 @@ android {
 }
 
 dependencies {
-    //implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -45,4 +44,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }

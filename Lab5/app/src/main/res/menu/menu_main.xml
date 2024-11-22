@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_start_quiz"
+        android:icon="@drawable/ic_quizstart"
         android:title="Начать квиз"
-        android:icon="@drawable/ic_launcher_foreground"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 </menu>
