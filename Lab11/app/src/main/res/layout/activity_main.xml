@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.lab11.GameViewModel" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Угадайте последовательность из 4 цифр"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etGuess"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Введите последовательность" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Отправить" />
+
+        <Button
+            android:id="@+id/btnFinish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Завершить игру" />
+
+        <TextView
+            android:id="@+id/tvAttempts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="История попыток:"
+            android:padding="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAttempts"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="8dp"/>
+    </LinearLayout>
+</layout>
