@@ -49,5 +49,12 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:padding="8dp"/>
+        <Switch
+            android:id="@+id/switchAllowRepeats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Разрешить повторы"
+            android:checked="false"
+            android:padding="8dp"/>
     </LinearLayout>
 </layout>
