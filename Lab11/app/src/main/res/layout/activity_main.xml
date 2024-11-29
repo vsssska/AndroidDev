@@ -1,60 +1,71 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+        <!-- Указываем ViewModel для привязки -->
         <variable
             name="viewModel"
             type="com.example.lab11.GameViewModel" />
+        <import type="android.text.TextUtils" />
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        tools:context=".MainActivity">
 
-        <TextView
-            android:id="@+id/tvInstructions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Угадайте последовательность из 4 цифр"
-            android:textSize="18sp" />
-
+        <!-- Поле ввода -->
         <EditText
             android:id="@+id/etGuess"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Введите последовательность" />
+            android:hint="Введите последовательность"
+            android:inputType="number"
+            android:maxLength="4" />
 
+        <!-- Кнопка отправки -->
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Отправить" />
+            android:enabled="@{!viewModel.isGameOver}"
+            android:text="Отправить"/>
 
+        <!-- Кнопка завершения -->
         <Button
             android:id="@+id/btnFinish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Завершить игру" />
+            android:text="Завершить игру"
+            android:onClick="@{() -> viewModel.finishGame()}"/>
 
-        <TextView
-            android:id="@+id/tvAttempts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="История попыток:"
-            android:padding="16dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvAttempts"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="8dp"/>
+        <!-- Переключатель для повторов -->
         <Switch
             android:id="@+id/switchAllowRepeats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:checked="@={viewModel.allowRepeats}"
             android:text="Разрешить повторы"
-            android:checked="false"
-            android:padding="8dp"/>
+            android:onCheckedChanged="@{(compoundButton, checked)-> viewModel.setAllowRepeats(checked)}"/>
+
+        <!-- История попыток -->
+        <TextView
+            android:id="@+id/tvAttempts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{TextUtils.join(`\n`, viewModel.attempts)}"
+            android:paddingTop="16dp" />
+
+        <!-- Сообщение результата -->
+        <TextView
+            android:id="@+id/tvResultMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.resultMessage}"
+            android:paddingTop="16dp" />
+
     </LinearLayout>
 </layout>
