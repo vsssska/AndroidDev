@@ -1,79 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/quiz"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".QuizActivity">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.lab5.QuestionViewModel" />
+    </data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_quest_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:id="@+id/constraintlayout">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonsContainer"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <FrameLayout
-                android:id="@+id/fragment_quest_container"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+        <TextView
+            android:id="@+id/textCorrectAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@{`Правильные: ` + viewModel.correctAnswers}"
+            app:layout_constraintBottom_toTopOf="@+id/textInCorrectAnswers"
+            tools:layout_editor_absoluteX="0dp"
+            android:padding="8dp"/>
+        <TextView
+            android:id="@+id/textInCorrectAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@{`Неправильные: ` + viewModel.incorrectAnswers}"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_quest_container"
+            tools:layout_editor_absoluteX="0dp"
+            android:padding="8dp"/>
+
+        <LinearLayout
+            android:id="@+id/buttonsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.461"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.069" />
+                android:text="Назад" />
 
             <Button
                 android:id="@+id/submitButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Ответить"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.899"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_quest_container"
-                app:layout_constraintVertical_bias="0.121"
-                tools:flow_verticalAlign="center" />
-
-            <TextView
-                android:id="@+id/statsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/submitButton"
-                app:layout_constraintVertical_bias="0.1" />
-
-            <Button
-                android:id="@+id/back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Назад"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/submitButton"
-                app:layout_constraintHorizontal_bias="0.384"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_quest_container"
-                app:layout_constraintVertical_bias="0.121" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_weight="1"
+                android:text="Ответить" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

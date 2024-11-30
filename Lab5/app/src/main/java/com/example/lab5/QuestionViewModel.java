@@ -2,6 +2,9 @@ package com.example.lab5;
 
 import android.util.Log;
 
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,9 +13,9 @@ import java.util.Map;
 
 public class QuestionViewModel extends ViewModel {
     private List<Question> questions = new ArrayList<>();
-    private int correctAnswers = 0;
-    private int wrongAnswers = 0;
-    private int currentIndex = 0;
+    private final MutableLiveData<Integer> correctAnswers = new MutableLiveData<>(0);
+    private MutableLiveData<Integer> currentIndex = new MutableLiveData<>(0);
+    private final MutableLiveData<Integer> incorrectAnswers  = new MutableLiveData<>(0);
     private final Map<Integer, String> answers = new HashMap<>();
 
 
@@ -25,33 +28,26 @@ public class QuestionViewModel extends ViewModel {
         return questions;
     }
 
-    public void incrementCorrectAnswers() {
-        correctAnswers++;
-    }
-
-    public void incrementWrongAnswers() {
-        wrongAnswers++;
-    }
-
-    public int getCorrectAnswers() {
-
-        return correctAnswers;
-    }
-
-    public int getWrongAnswers() {
-        return wrongAnswers;
-    }
-
-    public void savecurrentIndex(int questionIndex) {
-        currentIndex = questionIndex;
-    }
-
-    public int getcurrentIndex() {
+    public LiveData<Integer> getCurrentIndex() {
         return currentIndex;
     }
 
+    public LiveData<Integer> getCorrectAnswers() {
+        return correctAnswers;
+    }
+
+    public LiveData<Integer> getIncorrectAnswers() {
+        return incorrectAnswers;
+    }
+
+    public void savecurrentIndex(int questionIndex) {
+        currentIndex.setValue(questionIndex);
+    }
+
+
     public void saveAnswer(int questionId, String answer) {
         answers.put(questionId, answer);
+        int test = getCorrectAnswerCount();
     }
 
     public int getCorrectAnswerCount() {
@@ -68,6 +64,8 @@ public class QuestionViewModel extends ViewModel {
 
             Log.i("CorrectAnswerSave", correctAnswer);
         }
+        correctAnswers.setValue(correctCount);
+        incorrectAnswers.setValue(questions.size()-correctCount);
         return correctCount;
     }
 

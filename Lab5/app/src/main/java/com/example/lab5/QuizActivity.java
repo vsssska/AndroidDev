@@ -4,67 +4,57 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.lab5.databinding.ActivityQuizBinding;
 
 import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
 
+    private ActivityQuizBinding binding;
     private QuestionViewModel viewModel;
-    private Button submitButton;
-    private Button backButton;
-
-    private int correctAnswers = 0;
-    private int incorrectAnswers = 0;
     private int currentQuestionIndex = 0;
-    private List<Question> questionList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_quiz);
 
+        // setup bindings
+        binding = ActivityQuizBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         // Подгружаем ВьюМодел
         viewModel = new ViewModelProvider(this).get(QuestionViewModel.class);
+        binding.setViewModel(viewModel);
+        binding.setLifecycleOwner(this); // Устанавливаем LifecycleOwner для LiveData
 
         // Кнопка ответа
-        submitButton = findViewById(R.id.submitButton);
-        submitButton.setOnClickListener(v -> handleAnswer());
+        binding.submitButton.setOnClickListener(v -> handleAnswer());
 
         // Кнопка назад
-        backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(v -> onBackPressed());
+        binding.backButton.setOnClickListener(v -> onBackPressed());
 
 
         if (savedInstanceState == null) {
             // Загружаем фрагменты при первом запуске
             if (findViewById(R.id.fragment_stats_container) == null) {
-                loadQuestionFragment(viewModel.getcurrentIndex());
+                loadQuestionFragment(viewModel.getCurrentIndex().getValue());
             } else {
                 // Горизонтальная ориентация: фрагменты для вопроса и статистики
-                loadQuestionFragment(viewModel.getcurrentIndex());
+                loadQuestionFragment(viewModel.getCurrentIndex().getValue());
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_stats_container, new StatsFragment())
                         .commit();
             }
         }
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.quiz), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
     }
 
     // Кнопка ответа
@@ -75,7 +65,7 @@ public class QuizActivity extends AppCompatActivity {
         if (currentQuestionIndex < viewModel.getQuestions().size() - 1) {
             currentQuestionIndex++;
             viewModel.savecurrentIndex(currentQuestionIndex);
-            loadQuestionFragment(viewModel.getcurrentIndex());
+            loadQuestionFragment(viewModel.getCurrentIndex().getValue());
             Log.i("Button press", "submitbutton");
             boolean isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
             if (isLandscape) {
@@ -141,7 +131,6 @@ public class QuizActivity extends AppCompatActivity {
     // Проверка правильности
     private void checkAnswerForCurrentQuestion() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_quest_container);
-        String correctanswer = viewModel.getQuestions().get(viewModel.getcurrentIndex()).getCorrectAnswer();
 
         if (currentFragment instanceof SingleChoiceQuestionFragment) {
             // Получение ответа из фрагмента одиночного выбора
@@ -184,7 +173,7 @@ public class QuizActivity extends AppCompatActivity {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
             viewModel.savecurrentIndex(currentQuestionIndex);
-            loadQuestionFragment(viewModel.getcurrentIndex());
+            loadQuestionFragment(viewModel.getCurrentIndex().getValue());
         } else {
             super.onBackPressed();
         }
@@ -197,36 +186,4 @@ public class QuizActivity extends AppCompatActivity {
 
         viewModel.savecurrentIndex(currentQuestionIndex);
     }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        setContentView(R.layout.activity_quiz);
-
-        // Кнопка ответа
-        submitButton = findViewById(R.id.submitButton);
-        submitButton.setOnClickListener(v -> handleAnswer());
-
-        // Кнопка назад
-        backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(v -> onBackPressed());
-
-        // Checks the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // Горизонтальная ориентация: фрагменты для вопроса и статистики
-            loadQuestionFragment(viewModel.getcurrentIndex());
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_stats_container, new StatsFragment())
-                    .commit();
-            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_stats_container);
-            currentFragment = (StatsFragment) currentFragment;
-            ((StatsFragment) currentFragment).setStatsTextView(viewModel.getCorrectAnswerCount(),
-                    viewModel.getQuestions().size()-viewModel.getCorrectAnswerCount(),
-                    viewModel.getQuestions().size());
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            // Портретная ориентация
-            loadQuestionFragment(viewModel.getcurrentIndex());
-            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
-
-        } }
 }
