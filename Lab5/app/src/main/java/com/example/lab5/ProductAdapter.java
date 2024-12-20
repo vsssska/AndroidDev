@@ -1,112 +1,57 @@
 package com.example.lab5;
 
-import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    private Product[] products;
-    private Context context;
-//    идентификаторы типов представлений
-    private static final int VIEW_TYPE_PRODUCT = 0;
-    private static final int VIEW_TYPE_AD = 1;
 
-    public ProductAdapter(Product[] products, Context context) {
-        this.products = products;
-        this.context = context;
+import com.example.lab5.databinding.ItemProductBinding;
+
+public class ProductAdapter extends ListAdapter<Product, ProductAdapter.ProductViewHolder> {
+
+    protected ProductAdapter() {
+        super(DIFF_CALLBACK);
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position % 5 == 0 && position != 0) {
-            return VIEW_TYPE_AD;
+    private static final DiffUtil.ItemCallback<Product> DIFF_CALLBACK = new DiffUtil.ItemCallback<Product>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
+            return oldItem.getId() == newItem.getId();
         }
-        return VIEW_TYPE_PRODUCT;
-    }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_AD) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ad, parent, false);
-            return new AdViewHolder(view);
-        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
-            return new ProductViewHolder(view);
-        }
+    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemProductBinding binding = ItemProductBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new ProductViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) == VIEW_TYPE_AD) {
-            AdViewHolder adHolder = (AdViewHolder) holder;
-            adHolder.bindAd("Реклама: Идем на Свою игру!");
-        } else {
-            ProductViewHolder productHolder = (ProductViewHolder) holder;
-            int adjustedPosition = position - position / 5; // Учитываем смещение из-за рекламы
-            productHolder.bind(products[adjustedPosition]);
-
-            // Настройка нажатия на товар с полной карточкой
-            holder.itemView.setOnClickListener(view -> {
-                Intent intent = new Intent(context, ProductDetailActivity.class);
-                intent.putExtra("product_name", products[adjustedPosition].getName());
-                intent.putExtra("product_description", products[adjustedPosition].getDescription());
-                intent.putExtra("product_price", products[adjustedPosition].getPrice());
-                intent.putExtra("product_image", products[adjustedPosition].getImageResId());
-                context.startActivity(intent);
-            });
-        }
+    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+        holder.bind(getItem(position));
     }
 
-    @Override
-    public int getItemCount() {
-        // Учитываем количество элементов с рекламой
-        return products.length + products.length / 5;
-    }
+    static class ProductViewHolder extends RecyclerView.ViewHolder {
+        private final ItemProductBinding binding;
 
-    // ViewHolder для продукта
-    public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        private final TextView nameTextView;
-        private final TextView priceTextView;
-        private final ImageView imageView;
-
-        public ProductViewHolder(View itemView) {
-            super(itemView);
-            nameTextView = itemView.findViewById(R.id.productName);
-            priceTextView = itemView.findViewById(R.id.productPrice);
-            imageView = itemView.findViewById(R.id.productImage);
+        public ProductViewHolder(ItemProductBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         public void bind(Product product) {
-            nameTextView.setText(product.getName());
-            priceTextView.setText(String.format("$%.2f", product.getPrice()));
-            imageView.setImageResource(product.getImageResId());
+            binding.setProduct(product);
+            binding.executePendingBindings();
         }
     }
-
-    // ViewHolder для рекламы
-    public static class AdViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView adImage;
-        private final TextView adText;
-
-        public AdViewHolder(View itemView) {
-            super(itemView);
-            adImage = itemView.findViewById(R.id.ad_image);
-            adText = itemView.findViewById(R.id.ad_text);
-        }
-
-        public void bindAd(String adContent) {
-            adText.setText(adContent);
-            adImage.setImageResource(R.drawable.ic_ad);
-        }
-    }
-
-
 }

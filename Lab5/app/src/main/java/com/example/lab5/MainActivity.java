@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import android.content.res.Configuration;
@@ -88,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
             public Fragment createFragment(int position) {
                 switch (position) {
                     case 0: return new HomeFragment();
-                    case 1: return new JavaFragment();
-                    case 2: return new KotlinFragment();
+                    case 1: return ProductFragment.newInstance("java");
+                    case 2: return ProductFragment.newInstance("kotlin");
                     case 3: return new LocationsFragment();
                     default: return new HomeFragment();
                 }
